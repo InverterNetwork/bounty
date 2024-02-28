@@ -15,19 +15,19 @@ const openSans = Open_Sans({
   display: 'swap',
 })
 
-const title = 'Inverter Network'
+const title = 'Bloom Network'
 const { description, applicationName, images } = {
-  applicationName: `${title} | Bounty Dapp`,
+  applicationName: `${title} | Bounties`,
   description: 'Create Bounty => View => Submit Claim => Get Verified.',
   images: [
     {
-      url: 'InverterNetwork/media/main/inverter-dark-banner.png',
+      url: 'img/bloomBannerBounties.png',
     },
   ],
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://raw.githubusercontent.com/'),
+  metadataBase: new URL('https://bloomnetwork.earth/'),
   title,
   applicationName,
   description,

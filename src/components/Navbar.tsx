@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import ThemeSwitcher from './ThemeSwitcher'
+// import ThemeSwitcher from './ThemeSwitcher'
 import Link from 'next/link'
 import { Button, Dropdown } from 'react-daisyui'
 import WalletWidget from './WalletWidget'
@@ -76,14 +76,14 @@ export default function Navbar() {
       <NextLink href="/">
         <Image
           priority
-          src="/inverter-light-logo.svg"
-          alt="inverter_logo"
+          src="/bloom-light-logo.svg"
+          alt="bloom_logo"
           width={42}
           height={42}
         />
       </NextLink>
 
-      <ThemeSwitcher className="lg:flex hidden" />
+      {/* <ThemeSwitcher className="lg:flex hidden" /> */}
 
       <WalletWidget />
 
@@ -98,7 +98,7 @@ export default function Navbar() {
         </Button>
         <Dropdown.Menu className="menu-sm absolute bottom-[120%] right-0">
           <Dropdown.Item className="flex gap-2">
-            <ThemeSwitcher className="w-full" />
+            {/* <ThemeSwitcher className="w-full" /> */}
           </Dropdown.Item>
           <NavItems pathname={pathname} reverse />
         </Dropdown.Menu>
