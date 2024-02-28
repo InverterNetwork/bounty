@@ -55,15 +55,16 @@ export function useRole() {
 
       await waitUntilConfirmation(workflow.publicClient, hash)
 
-      return hash
+      return { hash, address: props.walletAddress! }
     },
 
-    onSuccess: (hash) => {
+    onSuccess: ({ hash, address }) => {
       addToast({
         text: `Role granted with hash ${hash}`,
         status: 'success',
       })
       roles.refetch()
+      checkRole.mutate(address)
     },
 
     onError: (error) => {
