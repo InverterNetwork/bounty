@@ -73,7 +73,7 @@ export default function Navbar() {
   const pathname = usePathname()
   return (
     <div className="navbar-c bottom-0 drop-shadow-2xl rounded-tl-xl rounded-tr-xl bg-base-100 border-t border-x">
-      <NextLink href="/">
+      <NextLink href="https://bloomnetwork.earth" target="_blank">
         <Image
           priority
           src="/bloom-light-logo.svg"
