@@ -19,7 +19,7 @@ export const getDynamicTheme = (isLight: boolean) => {
     }
       `
 
-  const borderColor = isLight ? light.neutral : dark.neutral
+  const borderColor = isLight ? light.neutral : dark['base-content']
   const textColor = isLight ? 'black' : 'white'
   const dynamicBrandColor = isLight ? light.accent : dark.accent
   const base1 = isLight ? light['base-100'] : dark['base-100']
