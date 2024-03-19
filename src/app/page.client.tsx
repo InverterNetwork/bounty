@@ -27,7 +27,7 @@ export default function PageClient({ list }: { list: FormattedBounty[] }) {
         <NextLink href="https://bloomnetwork.earth" target="_blank">
           <Image
             priority
-            src="/bloom-light-logo.svg"
+            src="/bloom-bounties-small.svg"
             alt="bloom_logo"
             width={100}
             height={100}
