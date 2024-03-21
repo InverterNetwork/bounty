@@ -34,8 +34,8 @@
     "redux-persist": "^6.0.0",
     "swiper": "^11.0.5",
     "ts-retry-promise": "^0.8.0",
-    "viem": "^1.19",
-    "wagmi": "^1.4"
+    "viem": "1.19.13",
+    "wagmi": "1.4.12"
   },
   "devDependencies": {
     "@commitlint/cli": "^19",
