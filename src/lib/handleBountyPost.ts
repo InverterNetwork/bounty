@@ -52,7 +52,7 @@ export const handleBountyPost = async ({
     status: 'success',
   })
 
-  await waitUntilConfirmation(workflow.publicClient, bounty)
+  await waitUntilConfirmation(workflow.publicClient!, bounty)
 
   return bounty
 }

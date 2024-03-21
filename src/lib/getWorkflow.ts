@@ -1,19 +1,24 @@
 import { abis } from '@inverter-network/abis'
 import { getContract } from 'viem'
-import { usePublicClient, useWalletClient } from 'wagmi'
+import type {
+  UsePublicClientReturnType,
+  UseWalletClientReturnType,
+} from 'wagmi'
 
 export const getWorkflow = async (
-  publicClient: ReturnType<typeof usePublicClient>,
+  publicClient: NonNullable<UsePublicClientReturnType>,
   orchestratorAddress: `0x${string}`,
-  walletClientQuery?: ReturnType<typeof useWalletClient>
+  walletClientQuery?: UseWalletClientReturnType
 ) => {
   const walletClient = walletClientQuery?.isSuccess
-    ? walletClientQuery.data!
+    ? walletClientQuery.data
     : undefined
+
+  const client = { public: publicClient, wallet: walletClient! }
 
   const orchestrator = getContract({
     abi: abis.Orchestrator.v1,
-    publicClient,
+    client,
     address: orchestratorAddress,
   })
 
@@ -28,23 +33,20 @@ export const getWorkflow = async (
   }
 
   const funding = getContract({
-    publicClient,
-    walletClient,
+    client,
     address: addresses.funding,
     abi: abis.RebasingFundingManager.v1,
   })
 
   const authorizer = getContract({
-    publicClient,
-    walletClient,
+    client,
     address: addresses.authorizer,
     abi: abis.RoleAuthorizer.v1,
   })
 
   const ERC20Address = await funding.read.token(),
     ERC20 = getContract({
-      publicClient,
-      walletClient,
+      client,
       address: ERC20Address,
       abi: abis.ERC20.v1,
     }),
@@ -52,8 +54,7 @@ export const getWorkflow = async (
     ERC20Decimals = await ERC20.read.decimals()
 
   const logic = getContract({
-    publicClient,
-    walletClient,
+    client,
     address: addresses.logic,
     abi: abis.BountyManager.v1,
   })

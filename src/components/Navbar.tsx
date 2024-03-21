@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { Button, Dropdown } from 'react-daisyui'
 import WalletWidget from './WalletWidget'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import cn from 'classnames'
+import { cn } from '@/styles/cn'
 import { useRole } from '@/hooks'
 import { PathStatePostRequest, PathsCorrespondingTo } from '@/lib/types/paths'
 import { firstLetterToUpper } from '@/lib/utils'
@@ -94,7 +94,7 @@ export default function Navbar() {
   const pathname = usePathname()
   return (
     <div className="navbar-c bottom-0 drop-shadow-2xl rounded-tl-xl rounded-tr-xl bg-base-100 border-t border-x">
-      <SVGLogo />
+      {/* <SVGLogo /> */}
       <NextLink href="https://bloomnetwork.earth" target="_blank">
         <Image
           priority

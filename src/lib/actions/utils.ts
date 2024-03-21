@@ -13,4 +13,4 @@ const publicClient = createPublicClient({
 })
 
 export const getServerWorkflow = () =>
-  getWorkflow(publicClient, defaultOrchestratorAddress!)
+  getWorkflow(publicClient!, defaultOrchestratorAddress!)

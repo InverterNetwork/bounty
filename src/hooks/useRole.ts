@@ -53,7 +53,7 @@ export function useRole() {
         status: 'info',
       })
 
-      await waitUntilConfirmation(workflow.publicClient, hash)
+      await waitUntilConfirmation(workflow.publicClient!, hash)
 
       return { hash, address: props.walletAddress! }
     },

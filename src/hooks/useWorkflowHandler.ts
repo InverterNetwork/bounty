@@ -17,12 +17,12 @@ export default function useWorkflowHandler(
     queryKey: [
       'workflowConfig',
       orchestratorAddress,
-      publicClient.chain,
-      walletClient.internal.dataUpdatedAt,
+      publicClient!.chain,
+      walletClient.dataUpdatedAt,
     ],
     queryFn: () =>
-      getWorkflow(publicClient, orchestratorAddress!, walletClient),
-    enabled: !!publicClient.chain && !!orchestratorAddress,
+      getWorkflow(publicClient!, orchestratorAddress!, walletClient),
+    enabled: !!publicClient?.chain && !!orchestratorAddress,
     refetchOnWindowFocus: false,
   })
   return {

@@ -3,10 +3,20 @@
 import { Global } from '@emotion/react'
 import { getDynamicTheme } from '@/styles/dynamicTheme'
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum'
-import { MagicWalletConnectors } from '@dynamic-labs/magic'
+import { MagicEvmWalletConnectors } from '@dynamic-labs/magic'
 import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core'
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector'
 import { useTheme } from '@/hooks'
+import { WagmiProvider, createConfig, http } from 'wagmi'
+import { sepolia } from 'viem/chains'
+
+const config = createConfig({
+  chains: [sepolia],
+  multiInjectedProviderDiscovery: false,
+  transports: {
+    [sepolia.id]: http(),
+  },
+})
 
 export default function ConnectorProvider({
   children,
@@ -26,10 +36,15 @@ export default function ConnectorProvider({
         settings={{
           environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ID || '',
           cssOverrides,
-          walletConnectors: [EthereumWalletConnectors, MagicWalletConnectors],
+          walletConnectors: [
+            EthereumWalletConnectors,
+            MagicEvmWalletConnectors,
+          ],
         }}
       >
-        <DynamicWagmiConnector>{children}</DynamicWagmiConnector>
+        <WagmiProvider config={config}>
+          <DynamicWagmiConnector>{children}</DynamicWagmiConnector>
+        </WagmiProvider>
       </DynamicContextProvider>
     </>
   )

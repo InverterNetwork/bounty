@@ -34,7 +34,7 @@ export async function handleClaim({
     status: 'success',
   })
 
-  await waitUntilConfirmation(workflow.publicClient, hash)
+  await waitUntilConfirmation(workflow.publicClient!, hash)
 
   return hash
 }

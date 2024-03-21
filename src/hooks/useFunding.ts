@@ -73,7 +73,7 @@ export function useFunding() {
         status: 'info',
       })
 
-      await waitUntilConfirmation(workflow.publicClient, hash)
+      await waitUntilConfirmation(workflow.publicClient!, hash)
 
       return hash
     },
@@ -108,7 +108,7 @@ export function useFunding() {
         status: 'info',
       })
 
-      await waitUntilConfirmation(workflow.publicClient, hash)
+      await waitUntilConfirmation(workflow.publicClient!, hash)
 
       return hash
     },
@@ -140,7 +140,7 @@ export function useFunding() {
         status: 'info',
       })
 
-      await waitUntilConfirmation(workflow.publicClient, hash)
+      await waitUntilConfirmation(workflow.publicClient!, hash)
 
       return { hash, formattedAmount }
     },

@@ -22,8 +22,7 @@ const walletClientAddresses = walletAddress ?? walletClient.account.address
 const ERC20MockContract = getContract({
   address: '0xFb4DC4067900C3e5b37eD0476c9c866864e0C759',
   abi: ERC20Mock_ABI,
-  publicClient,
-  walletClient,
+  client: { public: publicClient!, wallet: walletClient! },
 })
 
 const mintMockERC20 = (walletAddress: `0x${string}`, amount: number) =>
