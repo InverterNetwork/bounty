@@ -74,10 +74,13 @@ export function ContributerInput({
               'rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3',
               index === 0 && 'hidden'
             )}
+            // @ts-ignore
             size={30}
+            // @ts-ignore
             onClick={() => {
               removeContributer(c.uid)
             }}
+            // @ts-ignore
             disabled={canEditContributor === false}
           />
           <TextInput
