@@ -12,14 +12,14 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@dynamic-labs/ethereum": "^1.0.7",
-    "@dynamic-labs/magic": "^1.0.7",
-    "@dynamic-labs/sdk-react-core": "^1.0.7",
-    "@dynamic-labs/wagmi-connector": "^1.0.7",
+    "@dynamic-labs/ethereum": "^1",
+    "@dynamic-labs/magic": "^1",
+    "@dynamic-labs/sdk-react-core": "^1",
+    "@dynamic-labs/wagmi-connector": "^1",
     "@emotion/react": "^11.11.1",
     "@inverter-network/abis": "0.0.2",
     "@reduxjs/toolkit": "^1.9.7",
-    "@tanstack/react-query": "^5.13.4",
+    "@tanstack/react-query": "^5",
     "classnames": "^2.3.2",
     "next": "latest",
     "next-nprogress-bar": "^2.1.2",
@@ -57,8 +57,8 @@
   },
   "peerDependencies": {
     "typescript": "^5",
-    "viem": "^1.19.13",
-    "wagmi": "^1.4.12",
+    "viem": "^1.19",
+    "wagmi": "^1.4",
     "zod": "^3",
     "lodash": "^4"
   },
