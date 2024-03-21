@@ -1,5 +1,5 @@
 import { createPublicClient, createWalletClient, http } from 'viem'
-import { goerli } from 'viem/chains'
+import { sepolia } from 'viem/chains'
 import { privateKeyToAccount } from 'viem/accounts'
 import type { PublicClient, WalletClient } from 'wagmi'
 
@@ -9,7 +9,7 @@ export default function testConnectors(): {
 } {
   // Public Client: This is used to read from the blockchain.
   const publicClient = createPublicClient({
-    chain: goerli,
+    chain: sepolia,
     transport: http(),
   })
 
@@ -27,7 +27,7 @@ export default function testConnectors(): {
   // If need not be for it, non-owner can be used for deposits.
   const walletClient = createWalletClient({
     account: privateKeyToAccount(ownerPrivateKey),
-    chain: goerli,
+    chain: sepolia,
     transport: http(),
   })
 
