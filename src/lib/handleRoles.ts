@@ -21,16 +21,18 @@ export type HandleRoleProps = {
   address: Hex
 }
 
-export const handleRoles = async ({
+type RoleHexs = Record<RoleKeys, Hex>
+type GeneratedRoles = Record<BountyRoleKeys, Hex>
+
+export const getRoleHexes = async ({
   workflow: {
     contracts: { authorizer, logic },
     addresses: { logic: logicAddress },
   },
-  address,
-}: HandleRoleProps) => {
+}: Omit<HandleRoleProps, 'address'>) => {
   // Initialize roleIds and generatedRoles as empty objects
-  const roleHexs = {} as Record<RoleKeys, Hex>
-  const generatedRoles = {} as Record<BountyRoleKeys, Hex>
+  const roleHexs = {} as RoleHexs
+  const generatedRoles = {} as GeneratedRoles
 
   // Set role HEXs for each role in BountyRoles
   for (const [key, value] of Object.entries(BountyRoles)) {
@@ -51,6 +53,22 @@ export const handleRoles = async ({
   // Add the owner role HEX to roleHexs
   roleHexs.Owner = await authorizer.read.getOwnerRole()
 
+  return { roleHexs, generatedRoles }
+}
+
+export const getHasRoles = async ({
+  workflow: {
+    contracts: { authorizer },
+  },
+  address,
+  roleHexs,
+  generatedRoles,
+}: {
+  workflow: Workflow
+  roleHexs: RoleHexs
+  generatedRoles: GeneratedRoles
+  address: Hex
+}) => {
   // Initialize hasRoles as an empty object
   const hasRoles = {} as Record<`is${RoleKeys}`, boolean>
 
@@ -63,7 +81,24 @@ export const handleRoles = async ({
   }
 
   // Return the results
-  return { ...hasRoles, roleHexs }
+  return hasRoles
+}
+
+export const handleRoles = async ({ workflow, address }: HandleRoleProps) => {
+  // Initialize roleIds and generatedRoles as empty objects
+  const { roleHexs, generatedRoles } = await getRoleHexes({
+    workflow,
+  })
+
+  const hasRoles = await getHasRoles({
+    roleHexs,
+    generatedRoles,
+    workflow,
+    address,
+  })
+
+  // Return the results
+  return { ...hasRoles, roleHexs, generatedRoles }
 }
 
 export const grantOrRevokeRole = async ({
@@ -77,7 +112,7 @@ export const grantOrRevokeRole = async ({
   walletAddress: Hex
   type: 'Grant' | 'Revoke'
   workflow: Workflow
-  roleHexs: Record<RoleKeys, Hex>
+  roleHexs: RoleHexs
 }) => {
   // Determine the action based on the role and type
   const action = `${type === 'Grant' ? 'grant' : 'revoke'}${
@@ -85,6 +120,8 @@ export const grantOrRevokeRole = async ({
   }` as const
 
   const args = [roleHexs[role], walletAddress] as const
+
+  console.log(action, args)
 
   let hash: Hex
 

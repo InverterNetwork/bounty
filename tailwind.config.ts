@@ -1,8 +1,7 @@
-/** @type {import('tailwindcss').Config} */
+import { Config } from 'tailwindcss/types'
+import { dark, light } from './src/styles'
 
-const { dark, light } = require('./src/styles')
-
-module.exports = {
+const config: Config = {
   content: [
     'src/**/*.{js,ts,jsx,tsx,mdx}',
     'node_modules/daisyui/dist/**/*.js',
@@ -24,3 +23,5 @@ module.exports = {
   },
   plugins: [require('@tailwindcss/typography'), require('daisyui')],
 }
+
+export default config

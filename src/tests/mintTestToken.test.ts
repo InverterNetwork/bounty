@@ -20,7 +20,7 @@ const walletClientAddresses = walletAddress ?? walletClient.account.address
 
 // Create ERC20Mock contract / this is a mock contract for testing purposes
 const ERC20MockContract = getContract({
-  address: '0xFb4DC4067900C3e5b37eD0476c9c866864e0C759',
+  address: '0x5eb14c2e7D0cD925327d74ae4ce3fC692ff8ABEF',
   abi: ERC20Mock_ABI,
   client: { public: publicClient!, wallet: walletClient! },
 })
@@ -30,7 +30,7 @@ const mintMockERC20 = (walletAddress: `0x${string}`, amount: number) =>
 
 describe('Mint Mock ERC20', () => {
   it('should mint the specified amount of tokens to the first address in the wallet', async () => {
-    const res = await mintMockERC20(walletClientAddresses, 10_000_000)
+    const res = await mintMockERC20(walletClientAddresses, 100_000_000)
     expect(res).pass()
     console.log('Mint ERC20 Tx Hash: ', res)
   })

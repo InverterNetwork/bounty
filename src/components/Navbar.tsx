@@ -93,7 +93,14 @@ const NavItems = ({
 export default function Navbar() {
   const pathname = usePathname()
   return (
-    <div className="navbar-c bottom-0 drop-shadow-2xl rounded-tl-xl rounded-tr-xl bg-base-100 border-t border-x">
+    <div
+      className={`
+    fixed left-1/2 -translate-x-1/2 items-center p-2 flex 
+    justify-center gap-4 z-10 w-max bottom-0 
+    drop-shadow-2xl rounded-tl-xl rounded-tr-xl bg-base-100 
+    border-t border-x border-color-faint
+  `.trim()}
+    >
       {/* <SVGLogo /> */}
       <NextLink href="https://bloomnetwork.earth" target="_blank">
         <Image

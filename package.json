@@ -33,7 +33,8 @@
     "redux-persist": "^6",
     "swiper": "^11",
     "tailwind-merge": "^2.2.2",
-    "ts-retry-promise": "^0.8"
+    "ts-retry-promise": "^0.8",
+    "typeface-open-sans": "^1.1.13"
   },
   "devDependencies": {
     "@commitlint/cli": "^19",
