@@ -121,8 +121,6 @@ export const grantOrRevokeRole = async ({
 
   const args = [roleHexs[role], walletAddress] as const
 
-  console.log(action, args)
-
   let hash: Hex
 
   if (action === 'grantRole' || action === 'revokeRole')

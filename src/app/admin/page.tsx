@@ -34,7 +34,7 @@ export default function AdminPage() {
   const canSubmit = useMemo(() => {
     const role = tabs[tab]
     let can = checkRole?.data?.[`is${role}`] ?? false
-    let message = `${tab === 0 ? 'Wallet' : 'Token'} ${can ? 'has' : 'does not have'} role ${role}`
+    let message = `User ${can ? 'has' : 'does not have'} role ${role}`
     if (type === 'Grant') can = !can
     return { can, message }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +72,7 @@ export default function AdminPage() {
       />
       <form className="flex flex-col w-full max-w-xl gap-3" onSubmit={onSubmit}>
         <TextInput
-          label={`${tab === 0 ? 'Wallet' : 'Token'} Address`}
+          label="Wallet Address"
           onChange={setWalletAddress}
           type="address"
           required
