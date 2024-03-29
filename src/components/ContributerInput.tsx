@@ -65,8 +65,23 @@ export function ContributerInput({
         onClick={addContributer}
         disabled={canEditContributor === false}
       >
-        Add Contributor
+        Add Participant
       </Button>
+      <div className="mt-6">
+        *Only members of BloomNetwork.earth are eligible. <br></br>
+        <a
+          href="https://bloomnetwork.earth/member/bounty/localmembers"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          View your Local Bloom members` addresses
+        </a>
+      </div>
+      <div className="mt-12">
+        Paste impact participants` wallet addresses for payout. Include yourself
+        as a participant if you were one.
+      </div>
       {contributors.map((c, index) => (
         <Frame key={index} className="mt-6 relative">
           <IoClose
@@ -84,7 +99,7 @@ export function ContributerInput({
             disabled={canEditContributor === false}
           />
           <TextInput
-            label={`Contributer ${index + 1} Address`}
+            label={`Participant ${index + 1} wallet address`}
             onChange={(e) => {
               handleState({ uid: c.uid, addr: e as `0x${string}` })
             }}
@@ -93,7 +108,7 @@ export function ContributerInput({
             required
           />
           <NumberInput
-            label={`Proposal Amount ${symbol}`}
+            label={`Multiply the number of hours they contributed to the activity, by 30 ${symbol}`}
             onChange={(e) => {
               handleState({ uid: c.uid, claimAmount: e })
             }}

@@ -10,8 +10,6 @@ import { BountyDetails } from '../components/BountyDetails'
 import Link from 'next/link'
 import { FormattedBounty } from '../lib/types/bounty'
 import { useAccount } from 'wagmi'
-import NextLink from 'next/link'
-import Image from 'next/image'
 
 const tabs = ['List', 'Card'] as const
 
@@ -23,17 +21,6 @@ export default function PageClient({ list }: { list: FormattedBounty[] }) {
 
   return (
     <>
-      <div className="logo-container absolute top-10 left-10 z-10">
-        <NextLink href="https://bloomnetwork.earth" target="_blank">
-          <Image
-            priority
-            src="/bloom-bounties-small.svg"
-            alt="bloom_logo"
-            width={100}
-            height={100}
-          />
-        </NextLink>
-      </div>
       <FundingStats />
 
       <div className="flex flex-col items-center gap-6 w-full max-w-xl">
