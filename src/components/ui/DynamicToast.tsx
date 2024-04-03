@@ -24,7 +24,7 @@ export default function DynamicToast({
     <Toast
       vertical="top"
       horizontal="start"
-      className={'whitespace-break-spaces break-all'}
+      className={'whitespace-break-spaces break-all z-50'}
     >
       {alerts.map((alert, index) => (
         <Alert
