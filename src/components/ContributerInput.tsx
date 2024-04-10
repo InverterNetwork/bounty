@@ -57,6 +57,10 @@ export function ContributerInput({
           required
         />
       )}
+      <div className="mt-12">
+        Paste impact participants` wallet addresses for payout. Include yourself
+        as a participant if you were one.
+      </div>
       <Button
         className="mt-6"
         color="primary"
@@ -77,10 +81,6 @@ export function ContributerInput({
         >
           View your Local Bloom members` addresses
         </a>
-      </div>
-      <div className="mt-12">
-        Paste impact participants` wallet addresses for payout. Include yourself
-        as a participant if you were one.
       </div>
       {contributors.map((c, index) => (
         <Frame key={index} className="mt-6 relative">
