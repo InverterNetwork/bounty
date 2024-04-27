@@ -59,11 +59,14 @@ const NavItems = ({
   ]
 
   Object.entries(PathsCorrespondingTo).forEach(([key, value]) => {
-    if (can[key as NavbarFields])
+    if (can[key as NavbarFields]) {
+      // Change 'Claims' to 'My Claims'
+      const label = key === 'claims' ? 'My Claims' : firstLetterToUpper(key)
       arr.push({
         href: value,
-        label: firstLetterToUpper(key),
+        label,
       })
+    }
   })
 
   if (reverse) arr.reverse()
