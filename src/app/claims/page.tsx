@@ -21,12 +21,13 @@ export default function ClaimsPage() {
   const claim = list[selected ?? 0]
 
   useEffect(() => {
-    if (claim)
+    if (claim) {
       setContributors(
         claim.contributors.map((i) => ({ ...i, uid: crypto.randomUUID() }))
       )
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [claim?.bountyId])
+  }, [claim?.bountyId, selected])
 
   // const total = contributors.reduce((acc, i) => acc + Number(i.claimAmount), 0)
 

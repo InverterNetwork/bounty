@@ -83,7 +83,7 @@ export function ContributerInput({
         as a participant if you were one.
       </div>
       {contributors.map((c, index) => (
-        <Frame key={index} className="mt-6 relative">
+        <Frame key={c.uid} className="mt-6 relative">
           <IoClose
             className={cn(
               'rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3',
