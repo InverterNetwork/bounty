@@ -61,7 +61,7 @@ export default function ClaimsPage() {
 
       <InteractiveTable
         onSelect={setSelected}
-        heads={['Bounty ID', 'Claimed', 'URL']}
+        heads={['Bounty ID', 'Verified', 'URL']}
         rows={list.map((i) => ({
           row: [
             { item: String(i.bountyId) },
@@ -80,6 +80,12 @@ export default function ClaimsPage() {
             onSubmit={onSubmit}
             className="form-control gap-6 w-full max-w-xl"
           >
+            {/* Text informing the user about claim editing */}
+            {!claim?.claimed && (
+              <div className="text-white mt-6">
+                You may edit your claim until it is verified.
+              </div>
+            )}
             <ContributerInput
               contributors={contributors}
               contributersStateHandler={setContributors}
@@ -92,7 +98,7 @@ export default function ClaimsPage() {
               color="primary"
               type="submit"
             >
-              Submit
+              Submit Change
             </Button>
             <div className="mt-6">
               What happens after I submit my bounty claim?

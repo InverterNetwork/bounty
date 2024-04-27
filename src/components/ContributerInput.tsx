@@ -57,30 +57,19 @@ export function ContributerInput({
           required
         />
       )}
-      <Button
-        className="mt-6"
-        color="primary"
-        size="sm"
-        type="button"
-        onClick={addContributer}
-        disabled={canEditContributor === false}
-      >
-        Add Participant
-      </Button>
-      <div className="mt-6">
-        *Only members of BloomNetwork.earth are eligible. <br></br>
+
+      <div className="mt-4">
+        Paste impact participants` wallet addresses for payout. Include yourself
+        if you participated. *Only members of BloomNetwork.earth are eligible.*{' '}
+        <br></br>
         <a
           href="https://bloomnetwork.earth/member/bounty/localmembers"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline"
+          className="underline text-blue-300"
         >
           View your Local Bloom members` addresses
         </a>
-      </div>
-      <div className="mt-12">
-        Paste impact participants` wallet addresses for payout. Include yourself
-        as a participant if you were one.
       </div>
       {contributors.map((c, index) => (
         <Frame key={c.uid} className="mt-6 relative">
@@ -120,6 +109,16 @@ export function ContributerInput({
           />
         </Frame>
       ))}
+      <Button
+        className="mt-6"
+        style={{ backgroundColor: '#59127B', color: '#FFFFFF' }}
+        size="sm"
+        type="button"
+        onClick={addContributer}
+        disabled={canEditContributor === false}
+      >
+        Add Participant
+      </Button>
     </div>
   )
 }
