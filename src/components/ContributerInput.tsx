@@ -74,7 +74,7 @@ export function ContributerInput({
         />
       )}
 
-      <div className="mt-4">
+      <div className="mt-6">
         Paste impact participants` wallet addresses for payout. Include yourself
         if you participated. *Only members of BloomNetwork.earth are eligible.*{' '}
         <br></br>

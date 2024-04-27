@@ -78,7 +78,7 @@ export default function ClaimsPage() {
         return (
           <form
             onSubmit={onSubmit}
-            className="form-control gap-6 w-full max-w-xl"
+            className="form-control gap-4 w-full max-w-xl"
           >
             {/* Text informing the user about claim editing */}
             {!claim?.claimed && (
