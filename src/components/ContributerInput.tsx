@@ -67,7 +67,7 @@ export function ContributerInput({
     <div className="flex flex-col w-full max-w-xl">
       {!!onUrlChange && (
         <TextInput
-          label="Proposal URL"
+          label="Proposal URL - your impact report"
           type="url"
           onChange={onUrlChange}
           required
