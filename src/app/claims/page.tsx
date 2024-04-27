@@ -87,6 +87,11 @@ export default function ClaimsPage() {
             <div className="text-white mt-6">
               You may edit your claim until it is verified.
             </div>
+            {claim?.claimed && (
+              <p className="text-[#00af82]">
+                This claim has already been verified.
+              </p>
+            )}
             <ContributerInput
               contributors={contributors}
               contributersStateHandler={setContributors}
