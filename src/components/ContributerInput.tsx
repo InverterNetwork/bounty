@@ -30,15 +30,31 @@ export function ContributerInput({
     ])
   }
 
-  const handleState = ({ uid, addr, claimAmount }: InitialContributor) => {
-    const newContributers = contributors.map((c) => {
-      if (c.uid === uid) {
-        if (addr !== undefined) return { ...c, addr }
-        if (claimAmount !== undefined) return { ...c, claimAmount }
+  const handleState = ({
+    uid,
+    addr,
+    hours,
+  }: {
+    uid: string
+    addr?: string
+    hours?: string
+  }) => {
+    const numHours = hours ? parseInt(hours) : undefined // Convert hours to number
+    const claimAmount = numHours ? numHours * 30 : undefined // Calculate FLO from number of hours if hours is defined
+    const newContributers = contributors
+      .map((c) => {
+        if (c.uid === uid) {
+          return { ...c, claimAmount }
+        }
         return c
-      }
-      return c
-    })
+      })
+      .map((contributor) => ({
+        uid: contributor.uid,
+        addr: contributor.addr,
+        claimAmount: contributor.claimAmount
+          ? String(contributor.claimAmount)
+          : undefined, // Ensure claimAmount is of type string
+      }))
     contributersStateHandler(newContributers)
   }
 
@@ -96,17 +112,27 @@ export function ContributerInput({
             defaultValue={c.addr}
             required
           />
-          <NumberInput
-            label={`Multiply the number of hours they contributed to the activity, by 30 ${symbol}`}
-            onChange={(e) => {
-              handleState({ uid: c.uid, claimAmount: e })
-            }}
-            max={
-              !!maximumPayoutAmount ? Number(maximumPayoutAmount) : undefined
-            }
-            defaultValue={c.claimAmount}
-            required
-          />
+          <div className="flex items-center">
+            <NumberInput
+              label={`Number of hours contributed`}
+              onChange={(e) => {
+                handleState({ uid: c.uid, hours: e })
+              }}
+              max={
+                !!maximumPayoutAmount ? Number(maximumPayoutAmount) : undefined
+              }
+              defaultValue={
+                c.claimAmount ? parseInt(c.claimAmount) / 30 : undefined
+              } // Convert claimAmount to number before dividing by 30
+              required
+              style={{ width: '60px' }} // Adjust width here
+            />
+            <div className="ml-4">
+              {c.claimAmount !== undefined && c.claimAmount !== undefined && (
+                <div>{c.claimAmount} FLO</div>
+              )}
+            </div>
+          </div>
         </Frame>
       ))}
       <Button

@@ -98,7 +98,7 @@ export default function ClaimsPage() {
               color="primary"
               type="submit"
             >
-              Submit Change
+              Submit Changes
             </Button>
             <div className="mt-6">
               What happens after I submit my bounty claim?
