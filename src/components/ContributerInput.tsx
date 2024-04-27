@@ -112,9 +112,10 @@ export function ContributerInput({
             defaultValue={c.addr}
             required
           />
-          <div className="flex items-center">
+          <div className="ml-1 text-sm my-1">Number of hours contributed</div>
+          <div className="flex-grow flex items-center justify-between w-full">
             <NumberInput
-              label={`Number of hours contributed`}
+              // label={`Number of hours contributed`}
               onChange={(e) => {
                 handleState({ uid: c.uid, hours: e })
               }}
