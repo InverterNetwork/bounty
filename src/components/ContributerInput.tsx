@@ -40,7 +40,7 @@ export function ContributerInput({
     hours?: string
   }) => {
     const numHours = hours ? parseInt(hours) : undefined // Convert hours to number
-    const claimAmount = numHours ? numHours * 30 : undefined // Calculate FLO from number of hours if hours is defined
+    const claimAmount = numHours ? numHours * 30 : undefined // Calculate number of tokens from number of hours if hours is defined
     const newContributers = contributors
       .map((c) => {
         if (c.uid === uid) {
@@ -130,7 +130,9 @@ export function ContributerInput({
             />
             <div className="ml-4">
               {c.claimAmount !== undefined && c.claimAmount !== undefined && (
-                <div>{c.claimAmount} FLO</div>
+                <div>
+                  {c.claimAmount} {symbol}
+                </div>
               )}
             </div>
           </div>

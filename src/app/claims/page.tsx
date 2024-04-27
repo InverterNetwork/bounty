@@ -78,6 +78,10 @@ export default function ClaimsPage() {
       {(() => {
         if (!isConnected) return <WalletWidget />
 
+        if (list.length === 0) {
+          return null // or any other appropriate UI for when there are no claims yet
+        }
+
         return (
           <form
             onSubmit={onSubmit}
