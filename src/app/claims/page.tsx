@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Loading } from 'react-daisyui'
 import { WalletWidget } from '@/components'
-import { FundingStats } from '@/components/FundingStats'
+// import { FundingStats } from '@/components/FundingStats'
 import useClaim from '@/hooks/useClaim'
 import { InitialContributor } from '@/lib/types/claim'
 import { useRole } from '@/hooks'
@@ -57,7 +57,10 @@ export default function ClaimsPage() {
 
   return (
     <>
-      <FundingStats />
+      {/* <FundingStats /> */}
+      <div className=" text-gray-200 font-bold text-center text-2xl mt-4">
+        Bounty Claims you have Submitted
+      </div>
 
       <InteractiveTable
         onSelect={setSelected}
@@ -81,11 +84,9 @@ export default function ClaimsPage() {
             className="form-control gap-4 w-full max-w-xl"
           >
             {/* Text informing the user about claim editing */}
-            {!claim?.claimed && (
-              <div className="text-white mt-6">
-                You may edit your claim until it is verified.
-              </div>
-            )}
+            <div className="text-white mt-6">
+              You may edit your claim until it is verified.
+            </div>
             <ContributerInput
               contributors={contributors}
               contributersStateHandler={setContributors}
@@ -100,6 +101,11 @@ export default function ClaimsPage() {
             >
               Submit Changes
             </Button>
+            {claim?.claimed && (
+              <p className="text-[#00af82] text-center">
+                This claim has already been verified.
+              </p>
+            )}
             <div className="mt-6">
               What happens after I submit my bounty claim?
             </div>
