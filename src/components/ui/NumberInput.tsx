@@ -58,7 +58,7 @@ export default function NumberInput({
         <span className="label-text">{label}</span>
       </label>
 
-      <div className="flex gap-3">
+      <div className="flex gap-0">
         <button
           type="button"
           onClick={() => {
