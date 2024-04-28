@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { Button } from 'react-daisyui'
 import { Frame, NumberInput, TextInput } from './ui'
 import { IoClose } from 'react-icons/io5'
@@ -19,6 +21,31 @@ export function ContributerInput({
   maximumPayoutAmount?: string
   canEditContributor?: boolean
 }) {
+  const [validAddresses, setValidAddresses] = useState<string[]>([]) // Changed from walletAddresses to validAddresses
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const [validationError, setValidationError] = useState('')
+
+  useEffect(() => {
+    async function fetchValidAddresses() {
+      // Renamed from fetchWalletAddresses to fetchValidAddresses
+      try {
+        const response = await axios.get(
+          'https://dev-bloomnetwork.netlify.app/.netlify/functions/bountyapi'
+        )
+        // Filter out null values from the response
+        const addresses = response.data.filter((address) => address !== null)
+        setValidAddresses(addresses)
+      } catch (error) {
+        console.error(
+          'Error fetching wallet addresses:',
+          (error as Error).message
+        )
+      }
+    }
+
+    fetchValidAddresses() // Updated function name
+  }, [])
+
   const addContributer = () => {
     contributersStateHandler([
       ...contributors,
@@ -61,6 +88,24 @@ export function ContributerInput({
   const removeContributer = (uid: string) => {
     const newContributers = contributors.filter((c) => c.uid !== uid)
     contributersStateHandler(newContributers)
+  }
+
+  const validateAddress = (address: string) => {
+    if (!address.trim()) {
+      setValidationError('')
+      return
+    }
+
+    console.log('New Wallet:', address.trim()) // Log the trimmed wallet address
+
+    if (!validAddresses.includes(address.trim())) {
+      // Updated to validAddresses
+      setValidationError(
+        'Wallet address not found. Please contact your local Bloom member to add your wallet to their profile.'
+      )
+    } else {
+      setValidationError('')
+    }
   }
 
   return (
@@ -107,11 +152,25 @@ export function ContributerInput({
             label={`Participant ${index + 1} wallet address`}
             onChange={(e) => {
               handleState({ uid: c.uid, addr: e as `0x${string}` })
+              setHasInteracted(true)
+              // Perform address validation
+              validateAddress(e)
             }}
             type="address"
             defaultValue={c.addr}
             required
           />
+          {/* Validation messages */}
+          {hasInteracted && (
+            <>
+              {validationError && (
+                <p className="text-[#ed0b70]">{validationError}</p>
+              )}
+              {!validationError && (
+                <p className="text-[#00af82]">Valid wallet address</p>
+              )}
+            </>
+          )}
           <div className="ml-1 text-sm my-1">Number of hours contributed</div>
           <div className="flex-grow flex items-center justify-between w-full">
             <NumberInput
