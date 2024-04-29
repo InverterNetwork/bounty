@@ -33,7 +33,7 @@ export function ContributerInput({
     async function fetchValidAddresses() {
       try {
         const response = await axios.get(
-          'https://dev-bloomnetwork.netlify.app/.netlify/functions/bountyapi'
+          'https://bloomnetwork.earth/.netlify/functions/bountyapi'
         )
         // Filter out null values from the response
         const addresses = response.data.filter(
