@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Loading } from 'react-daisyui'
 import { WalletWidget } from '@/components'
-import { FundingStats } from '@/components/FundingStats'
+// import { FundingStats } from '@/components/FundingStats'
 import useClaim from '@/hooks/useClaim'
 import { InitialContributor } from '@/lib/types/claim'
 import { useRole } from '@/hooks'
@@ -21,12 +21,13 @@ export default function ClaimsPage() {
   const claim = list[selected ?? 0]
 
   useEffect(() => {
-    if (claim)
+    if (claim) {
       setContributors(
         claim.contributors.map((i) => ({ ...i, uid: crypto.randomUUID() }))
       )
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [claim?.bountyId])
+  }, [claim?.bountyId, selected])
 
   // const total = contributors.reduce((acc, i) => acc + Number(i.claimAmount), 0)
 
@@ -56,11 +57,14 @@ export default function ClaimsPage() {
 
   return (
     <>
-      <FundingStats />
+      {/* <FundingStats /> */}
+      <div className=" text-gray-200 font-bold text-center text-2xl mt-4">
+        Bounty Claims you have Submitted
+      </div>
 
       <InteractiveTable
         onSelect={setSelected}
-        heads={['Bounty ID', 'Claimed', 'URL']}
+        heads={['Bounty ID', 'Verified', 'URL']}
         rows={list.map((i) => ({
           row: [
             { item: String(i.bountyId) },
@@ -74,11 +78,24 @@ export default function ClaimsPage() {
       {(() => {
         if (!isConnected) return <WalletWidget />
 
+        if (list.length === 0) {
+          return null // or any other appropriate UI for when there are no claims yet
+        }
+
         return (
           <form
             onSubmit={onSubmit}
-            className="form-control gap-6 w-full max-w-xl"
+            className="form-control gap-4 w-full max-w-xl"
           >
+            {/* Text informing the user about claim editing */}
+            <div className="text-white mt-6">
+              You may edit your claim until it is verified.
+            </div>
+            {claim?.claimed && (
+              <p className="text-[#00af82]">
+                This claim has already been verified.
+              </p>
+            )}
             <ContributerInput
               contributors={contributors}
               contributersStateHandler={setContributors}
@@ -91,8 +108,13 @@ export default function ClaimsPage() {
               color="primary"
               type="submit"
             >
-              Submit
+              Submit Changes
             </Button>
+            {claim?.claimed && (
+              <p className="text-[#00af82] text-center">
+                This claim has already been verified.
+              </p>
+            )}
             <div className="mt-6">
               What happens after I submit my bounty claim?
             </div>
