@@ -28,7 +28,7 @@ export function ContributerInput({
   canEditContributor?: boolean
 }) {
   const [validAddresses, setValidAddresses] = useState<string[]>([]) // State to store valid addresses
-  const [invalidAddressMessage, setInvalidAddressMessage] = useState('')
+  const [formValid, setFormValid] = useState<boolean>(true) // State to track form validity
 
   useEffect(() => {
     async function fetchValidAddresses() {
@@ -75,13 +75,28 @@ export function ContributerInput({
         if (field === 'addr') {
           if (!value.trim()) {
             validationError = 'Please enter a wallet address'
+            isValidAddress = false
           } else if (!validAddresses.includes(value.trim())) {
             validationError =
               'Invalid wallet address - if you know this the address of one of your Local Bloom members, you need to ask them to add it to their BloomNetwork.earth profile, before you are able to include it in a bounty claim.'
           }
         }
 
-        return { ...contributor, [field]: value, claimAmount, validationError }
+        const contributorWithValidation: ContributorWithValidation = {
+          ...contributor,
+          [field]: value,
+          claimAmount,
+          validationError,
+        }
+
+        // Check if any contributor has validation errors
+        const isFormValid = contributors.every(
+          (c) => !c.validationError || c.validationError === ''
+        )
+
+        setFormValid(isFormValid) // Update form validity state
+
+        return contributorWithValidation
       }
       return contributor
     })
@@ -129,10 +144,11 @@ export function ContributerInput({
         <Frame key={contributor.uid} className="mt-6 relative">
           {/* Close button */}
           <IoClose
-            className={cn(
-              'rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3',
-              index === 0 && 'hidden'
-            )}
+            className="rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3"
+            // className={cn(
+            //   'rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3',
+            //   index === 0 && 'hidden'
+            // )}
             size={30}
             onClick={() => removeContributor(contributor.uid)}
             disabled={canEditContributor === false}
@@ -157,32 +173,41 @@ export function ContributerInput({
           )} */}
 
           {/* Number of hours contributed */}
-          <div className="ml-1 text-sm my-1">Number of hours contributed</div>
-          <div className="flex-grow flex items-center justify-between w-full">
-            <NumberInput
-              onChange={(value: string) =>
-                handleState(contributor.uid, 'hours', value)
-              }
-              max={
-                !!maximumPayoutAmount ? Number(maximumPayoutAmount) : undefined
-              }
-              defaultValue={
-                typeof contributor.claimAmount === 'number'
-                  ? String(contributor.claimAmount / 30)
-                  : String(Number(contributor.claimAmount) / 30) // Convert to number first
-              }
-              required
-              style={{ width: '60px' }}
-            />
-            {/* Display claim amount */}
-            <div className="ml-4">
-              {contributor.claimAmount !== undefined && (
-                <div>
-                  {contributor.claimAmount} {symbol}
+          {!contributor.validationError && ( // Render only if there's no validation error
+            <>
+              <div className="ml-1 text-sm my-1">
+                Number of hours contributed
+              </div>
+              <div className="flex-grow flex items-center justify-between w-full">
+                <NumberInput
+                  onChange={(value: string) =>
+                    handleState(contributor.uid, 'hours', value)
+                  }
+                  max={
+                    !!maximumPayoutAmount
+                      ? Number(maximumPayoutAmount)
+                      : undefined
+                  }
+                  defaultValue={
+                    typeof contributor.claimAmount === 'number'
+                      ? String(contributor.claimAmount / 30)
+                      : String(Number(contributor.claimAmount) / 30) // Convert to number first
+                  }
+                  required
+                  style={{ width: '60px' }}
+                  disabled={!!contributor.validationError} //
+                />
+                {/* Display claim amount */}
+                <div className="ml-4">
+                  {contributor.claimAmount !== undefined && (
+                    <div>
+                      {contributor.claimAmount} {symbol}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+            </>
+          )}
         </Frame>
       ))}
 
