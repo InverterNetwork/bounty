@@ -1,11 +1,10 @@
 import { Button } from 'react-daisyui'
-import { Frame, NumberInput, TextInput } from './ui' // Corrected import statement
+import { Frame, NumberInput, TextInput } from './ui'
 import { IoClose } from 'react-icons/io5'
 import { InitialContributor } from '@/lib/types/claim'
 import { cn } from '@/styles/cn'
-import { useState } from 'react' // Added import for useState
-import { useEffect } from 'react'
-import axios from 'axios' // Import axios for API requests
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 // Define a new type extending InitialContributor with validationError
 type ContributorWithValidation = InitialContributor & {
@@ -27,8 +26,8 @@ export function ContributerInput({
   maximumPayoutAmount?: string
   canEditContributor?: boolean
 }) {
-  const [validAddresses, setValidAddresses] = useState<string[]>([]) // State to store valid addresses
-  const [formValid, setFormValid] = useState<boolean>(true) // State to track form validity
+  const [validAddresses, setValidAddresses] = useState<string[]>([])
+  const [formValid, setFormValid] = useState<boolean>(true)
 
   useEffect(() => {
     async function fetchValidAddresses() {
@@ -97,7 +96,7 @@ export function ContributerInput({
           (c) => !c.validationError || c.validationError === ''
         )
 
-        setFormValid(isFormValid) // Update form validity state
+        setFormValid(isFormValid)
 
         return contributorWithValidation
       }
@@ -117,7 +116,6 @@ export function ContributerInput({
   return (
     <div className="flex flex-col w-full max-w-xl">
       {/* Include Proposal URL input if onUrlChange prop is provided */}
-      {/* Assuming TextInputContributor is the correct component */}
       {!!onUrlChange && (
         <TextInput
           label="Proposal URL - your impact report"
@@ -148,10 +146,6 @@ export function ContributerInput({
           {/* Close button */}
           <IoClose
             className="rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3"
-            // className={cn(
-            //   'rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3',
-            //   index === 0 && 'hidden'
-            // )}
             size={30}
             onClick={() => removeContributor(contributor.uid)}
             {...(canEditContributor === false && { disabled: true })}
@@ -170,10 +164,6 @@ export function ContributerInput({
             defaultValue={contributor.addr}
             required
           />
-          {/* Validation messages */}
-          {/* {contributor.validationError && (
-            <p className="text-red-500">{contributor.validationError}</p>
-          )} */}
 
           {/* Number of hours contributed */}
           {!contributor.validationError && ( // Render only if there's no validation error
@@ -194,7 +184,7 @@ export function ContributerInput({
                   defaultValue={
                     typeof contributor.claimAmount === 'number'
                       ? String(contributor.claimAmount / 30)
-                      : String(Number(contributor.claimAmount) / 30) // Convert to number first
+                      : String(Number(contributor.claimAmount) / 30)
                   }
                   required
                   style={{ width: '60px' }}
