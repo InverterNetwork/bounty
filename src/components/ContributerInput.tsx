@@ -42,7 +42,10 @@ export function ContributerInput({
         )
         setValidAddresses(addresses)
       } catch (error) {
-        console.error('Error fetching wallet addresses:', error.message)
+        console.error(
+          'Error fetching wallet addresses:',
+          (error as Error).message
+        )
       }
     }
 
@@ -52,7 +55,7 @@ export function ContributerInput({
   const addContributor = () => {
     const newContributor: ContributorWithValidation = {
       uid: crypto.randomUUID(),
-      addr: '',
+      addr: undefined,
       claimAmount: undefined,
       validationError: '', // Add validationError property for each contributor
     }
@@ -75,7 +78,6 @@ export function ContributerInput({
         if (field === 'addr') {
           if (!value.trim()) {
             validationError = 'Please enter a wallet address'
-            isValidAddress = false
           } else if (!validAddresses.includes(value.trim())) {
             validationError =
               'Invalid wallet address - if you know this the address of one of your Local Bloom members, you need to ask them to add it to their BloomNetwork.earth profile, before you are able to include it in a bounty claim.'
@@ -85,7 +87,8 @@ export function ContributerInput({
         const contributorWithValidation: ContributorWithValidation = {
           ...contributor,
           [field]: value,
-          claimAmount,
+          claimAmount:
+            claimAmount !== undefined ? String(claimAmount) : undefined,
           validationError,
         }
 
@@ -151,7 +154,7 @@ export function ContributerInput({
             // )}
             size={30}
             onClick={() => removeContributor(contributor.uid)}
-            disabled={canEditContributor === false}
+            {...(canEditContributor === false && { disabled: true })}
           />
 
           {/* Wallet address input */}
