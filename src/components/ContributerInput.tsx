@@ -79,7 +79,7 @@ export function ContributerInput({
             validationError = 'Please enter a wallet address'
           } else if (!validAddresses.includes(value.trim())) {
             validationError =
-              'Invalid wallet address - if you know this the address of one of your Local Bloom members, you need to ask them to add it to their BloomNetwork.earth profile, before you are able to include it in a bounty claim.'
+              'Invalid wallet address - if you know this is the address of one of your Local Bloom members, you need to ask them to add it to their BloomNetwork.earth profile, before you are able to include them in a bounty claim.'
           }
         }
 
