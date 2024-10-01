@@ -15,7 +15,7 @@
     "@dynamic-labs/sdk-react-core": "^2.5.1",
     "@dynamic-labs/wagmi-connector": "^2.5.1",
     "@emotion/react": "^11.13.3",
-    "@inverter-network/sdk": "^0.2.8",
+    "@inverter-network/sdk": "^0.2.10",
     "@reduxjs/toolkit": "^1.9.7",
     "@tanstack/react-query-devtools": "^5.52.2",
     "axios": "^1.7.7",
