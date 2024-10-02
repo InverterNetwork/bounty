@@ -17,12 +17,14 @@ export async function handleEditContributers({
 
   const hash =
     await workflow.data!.optionalModule.LM_PC_Bounties_v1.write.updateClaimContributors.run(
-      [claimId, parsedContributors]
+      [claimId, parsedContributors],
+      {
+        confirmations: 1,
+        onConfirmation: () => {
+          toast.success('Edit contributors confirmed')
+        },
+      }
     )
-
-  toast.info(`Waiting for edit contibutors confirmation`)
-
-  await workflow.publicClient?.waitForTransactionReceipt({ hash })
 
   return hash
 }

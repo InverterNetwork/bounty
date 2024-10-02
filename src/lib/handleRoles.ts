@@ -1,5 +1,6 @@
 import { type Hex } from 'viem'
 import { Workflow } from './getWorkflow'
+import { MethodOptions } from '@inverter-network/sdk'
 
 const BountyRoles = {
   Claimer: 'CLAIMANT_ROLE',
@@ -98,19 +99,22 @@ export const handleRoles = async ({ workflow, address }: HandleRoleProps) => {
   return { ...hasRoles, roleHexs, generatedRoles }
 }
 
-export const grantOrRevokeRole = async ({
-  role,
-  walletAddress,
-  type,
-  workflow,
-  roleHexs,
-}: {
-  role: RoleKeys
-  walletAddress: Hex
-  type: 'Grant' | 'Revoke'
-  workflow: Workflow
-  roleHexs: RoleHexs
-}) => {
+export const grantOrRevokeRole = async (
+  {
+    role,
+    walletAddress,
+    type,
+    workflow,
+    roleHexs,
+  }: {
+    role: RoleKeys
+    walletAddress: Hex
+    type: 'Grant' | 'Revoke'
+    workflow: Workflow
+    roleHexs: RoleHexs
+  },
+  options?: MethodOptions
+) => {
   // Determine the action based on the role and type
   const action = `${type === 'Grant' ? 'grant' : 'revoke'}${
     role === 'Owner' ? 'Role' : 'ModuleRole'
@@ -121,10 +125,12 @@ export const grantOrRevokeRole = async ({
   let hash: Hex
 
   if (action === 'grantRole' || action === 'revokeRole')
-    hash = await workflow.authorizer.write[action].run(args)
+    hash = await workflow.authorizer.write[action].run(args, options)
   else
-    hash =
-      await workflow.optionalModule.LM_PC_Bounties_v1.write[action].run(args)
+    hash = await workflow.optionalModule.LM_PC_Bounties_v1.write[action].run(
+      args,
+      options
+    )
 
   return hash
 }

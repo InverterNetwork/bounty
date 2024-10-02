@@ -55,25 +55,33 @@ export function useRole() {
       type: 'Grant' | 'Revoke'
     }) => {
       // Handle the grant or revoke role / return the transaction hash
-      const hash = await grantOrRevokeRole({
-        ...props,
-        workflow: workflow.data!,
-        roleHexs: roles.data!.roleHexs,
-      })
-
-      // Add a toast to notify the user that the role is being set
-      toast.info(`${props.type}ng role ${props.role} to ${props.walletAddress}`)
-
-      // Wait for the transaction to be confirmed
-      await workflow.publicClient?.waitForTransactionReceipt({ hash })
+      const hash = await grantOrRevokeRole(
+        {
+          ...props,
+          workflow: workflow.data!,
+          roleHexs: roles.data!.roleHexs,
+        },
+        {
+          confirmations: 1,
+          onHash: () => {
+            toast.info(
+              `${props.type}ng role ${props.role} to ${props.walletAddress}`
+            )
+          },
+          onConfirmation: (receipt) => {
+            // Add a toast to notify the user that the role has been set
+            toast.success(
+              `Role ${props.type.toLowerCase()}ed with hash ${receipt.transactionHash}`
+            )
+          },
+        }
+      )
 
       // Return the transaction hash and the address and type of the role
-      return { hash, address: props.walletAddress!, type: props.type }
+      return { address: props.walletAddress! }
     },
 
-    onSuccess: ({ hash, address: anyAddress, type }) => {
-      // Add a toast to notify the user that the role has been set
-      toast.success(`Role ${type.toLowerCase()}ed with hash ${hash}`)
+    onSuccess: ({ address: anyAddress }) => {
       // if the address is the connected address, refetch the roles
       if (address === anyAddress) roles.refetch()
       // run the checkRole mutation to notify the UI of the change

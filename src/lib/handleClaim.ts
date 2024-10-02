@@ -13,15 +13,15 @@ export async function handleClaim({
 
   const mappedContributers = contributors.map((c) => c)
 
-  const hash = await optionalModule.LM_PC_Bounties_v1.write.addClaim.run([
-    bountyId,
-    mappedContributers,
-    details,
-  ])
-
-  toast.success(`Waiting for claim proposal confirmation`)
-
-  await workflow.publicClient?.waitForTransactionReceipt({ hash })
+  const hash = await optionalModule.LM_PC_Bounties_v1.write.addClaim.run(
+    [bountyId, mappedContributers, details],
+    {
+      confirmations: 1,
+      onConfirmation: () => {
+        toast.success('Claim proposal confirmed')
+      },
+    }
+  )
 
   return hash
 }

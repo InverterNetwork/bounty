@@ -13,7 +13,6 @@ export function useBounty() {
       handleBountyPost({ data, workflow, toast }),
 
     onSuccess: () => {
-      toast.success(`Bounty post has been confirmed`)
       refreshServerPaths.post(['bounties'])
     },
 

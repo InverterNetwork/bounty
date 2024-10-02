@@ -18,12 +18,15 @@ export async function handleVerify({
 
   const config = [claimId, parsedContributors] as const
 
-  const hash =
-    await optionalModule.LM_PC_Bounties_v1.write.verifyClaim.run(config)
-
-  toast.success(`Waiting for verify confirmation`)
-
-  await workflow.publicClient?.waitForTransactionReceipt({ hash })
+  const hash = await optionalModule.LM_PC_Bounties_v1.write.verifyClaim.run(
+    config,
+    {
+      confirmations: 1,
+      onConfirmation: () => {
+        toast.success('Verify proposal confirmed')
+      },
+    }
+  )
 
   return hash
 }

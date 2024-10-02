@@ -31,16 +31,16 @@ export const handleBountyPost = async ({
     date: new Date().toISOString(),
   } satisfies FormattedBountyDetails
 
-  const bounty =
-    await workflow.data.optionalModule.LM_PC_Bounties_v1.write.addBounty.run([
-      minimumPayoutAmount,
-      maximumPayoutAmount,
-      newDetails,
-    ])
+  const hash =
+    await workflow.data.optionalModule.LM_PC_Bounties_v1.write.addBounty.run(
+      [minimumPayoutAmount, maximumPayoutAmount, newDetails],
+      {
+        confirmations: 1,
+        onConfirmation: () => {
+          toast.success('Bounty post confirmed')
+        },
+      }
+    )
 
-  toast.success('Waiting for bounty post confirmation')
-
-  await workflow.publicClient?.waitForTransactionReceipt({ hash: bounty })
-
-  return bounty
+  return hash
 }

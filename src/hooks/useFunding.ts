@@ -60,19 +60,23 @@ export function useFunding() {
   const deposit = useMutation({
     mutationKey: ['deposit'],
     mutationFn: async (formatted: string) => {
-      const hash =
-        await workflow.data?.fundingManager.write?.deposit.run(formatted)!
-
-      toast.info(`Waiting for deposit confirmation`)
-
-      await workflow.publicClient?.waitForTransactionReceipt({ hash })
+      const hash = await workflow.data?.fundingManager.write?.deposit.run(
+        formatted,
+        {
+          confirmations: 1,
+          onConfirmation: () => {
+            toast.info('Deposit confirmed')
+          },
+          onApprove: () => {
+            toast.info('Approving the Amount')
+          },
+        }
+      )!
 
       return hash
     },
 
     onSuccess: () => {
-      toast.success(`Deposit confirmed`)
-
       refetchTotalSupply()
       balance.refetch()
       allowance.refetch()
@@ -112,20 +116,20 @@ export function useFunding() {
   const approve = useMutation({
     mutationKey: ['approve'],
     mutationFn: async (formattedAmount: string) => {
-      const hash = await workflow.data?.fundingToken.module.write?.approve.run([
-        fundingManagerAddress!,
-        formattedAmount,
-      ])!
-
-      toast.info(`Waiting for approval confirmation`)
-
-      await workflow.publicClient?.waitForTransactionReceipt({ hash })
+      const hash = await workflow.data?.fundingToken.module.write?.approve.run(
+        [fundingManagerAddress!, formattedAmount],
+        {
+          confirmations: 1,
+          onConfirmation: () => {
+            toast.success('Approval confirmed')
+          },
+        }
+      )!
 
       return { hash, formattedAmount }
     },
 
     onSuccess: ({ formattedAmount }) => {
-      toast.success(`Approval confirmed`)
       allowance.refetch()
       deposit.mutate(formattedAmount)
     },
