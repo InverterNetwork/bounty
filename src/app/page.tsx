@@ -34,34 +34,40 @@ export default function PageClient() {
         <CardHeader>
           <CardTitle>Bounties</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-6">
           {!list.data?.length && <NoData />}
 
-          {!!list.data?.length && (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead></TableHead>
-                  <TableHead>Bounty ID</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {list.data?.map((row) => {
-                  return (
-                    <TableRow key={row.id} className="!bg-background">
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>{row.details.title}</TableCell>
-                      <TableCell>
-                        <Button color="primary">Select</Button>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          )}
+          <div className="flex overflow-auto max-w-full max-h-96">
+            {!!list.data?.length && (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Bounty ID</TableHead>
+                    <TableHead>Title</TableHead>
+                    <TableHead></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {list.data?.map((row, index) => {
+                    return (
+                      <TableRow key={row.id} className="!bg-background">
+                        <TableCell>{row.id}</TableCell>
+                        <TableCell>{row.details.title}</TableCell>
+                        <TableCell className="flex justify-center">
+                          <Button
+                            color="primary"
+                            onClick={() => setIndex(index)}
+                          >
+                            Select
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            )}
+          </div>
 
           {!!bounty && (
             <BountyDetails.DetailedDescription

@@ -13,7 +13,13 @@ import {
   DrawerTrigger,
   Separator,
 } from '@inverter-network/react/client'
-import { Menu, Landmark, ScrollIcon } from 'lucide-react'
+import {
+  Menu,
+  PiggyBank,
+  ScrollIcon,
+  GitPullRequestCreate,
+  ShieldPlus,
+} from 'lucide-react'
 import { ThemeSwitcher } from './theme-switcher'
 import { WalletWidget } from './wallet-widget'
 import { useTheme } from 'next-themes'
@@ -21,6 +27,7 @@ import { useTheme } from 'next-themes'
 export function Navbar() {
   const { resolvedTheme } = useTheme()
   const pathname = usePathname()
+
   return (
     <div
       className={`
@@ -49,7 +56,7 @@ export function Navbar() {
 
         <Separator orientation="vertical" />
 
-        <div className="items-center hidden md:flex gap-4">
+        <div className="items-center hidden md:flex gap-2">
           <NavItems pathname={pathname} />
         </div>
       </div>
@@ -88,7 +95,17 @@ const NavItems = ({ pathname }: { pathname: string }) => {
     {
       href: '/deposit',
       label: 'Deposit',
-      icon: <Landmark />,
+      icon: <PiggyBank />,
+    },
+    {
+      href: '/post',
+      label: 'Post',
+      icon: <GitPullRequestCreate />,
+    },
+    {
+      href: '/admin',
+      label: 'Admin',
+      icon: <ShieldPlus />,
     },
   ]
 

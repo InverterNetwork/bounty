@@ -35,8 +35,11 @@ export function useBounty() {
     },
   })
 
+  const ERC20Symbol = workflow.data?.fundingToken?.symbol ?? '...'
+
   return {
     post,
     list,
+    ERC20Symbol,
   }
 }

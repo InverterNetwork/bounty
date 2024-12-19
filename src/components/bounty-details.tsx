@@ -65,11 +65,11 @@ export const BountyDetails = {
     symbol: string
     creatorAddress?: string
   }) => (
-    <Frame className="max-w-xl">
+    <Frame className="max-w-xl flex flex-col gap-5">
       <h4>Description</h4>
-      <p>{description}</p>
+      <p className="-mt-4">{description}</p>
       <h4>URL</h4>
-      <a href={url} target="_blank" className="link">
+      <a href={url} target="_blank" className="link -mt-4">
         {url}
       </a>
       <div className="flex flex-wrap gap-3 justify-center">
