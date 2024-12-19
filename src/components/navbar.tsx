@@ -13,7 +13,7 @@ import {
   DrawerTrigger,
   Separator,
 } from '@inverter-network/react/client'
-import { Menu, Home, ScrollIcon } from 'lucide-react'
+import { Menu, Landmark, ScrollIcon } from 'lucide-react'
 import { ThemeSwitcher } from './theme-switcher'
 import { WalletWidget } from './wallet-widget'
 import { useTheme } from 'next-themes'
@@ -82,13 +82,13 @@ const NavItems = ({ pathname }: { pathname: string }) => {
   const arr = [
     {
       href: '/',
-      label: 'Home',
-      icon: <Home />,
+      label: 'Bounties',
+      icon: <ScrollIcon />,
     },
     {
-      href: '/page-1',
-      label: 'Page 1',
-      icon: <ScrollIcon />,
+      href: '/deposit',
+      label: 'Deposit',
+      icon: <Landmark />,
     },
   ]
 
