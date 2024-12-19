@@ -6,31 +6,17 @@ import { EthereumWalletConnectors } from '@dynamic-labs/ethereum'
 import {
   DynamicContextProvider,
   DynamicUserProfile,
-  mergeNetworks,
+  // mergeNetworks,
 } from '@dynamic-labs/sdk-react-core'
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector'
 import { WagmiProvider, createConfig, http } from 'wagmi'
 import { Chain, HttpTransport } from 'viem'
-import {
-  optimismSepolia,
-  polygonAmoy,
-  baseSepolia,
-  gnosisChiado,
-  polygonZkEvm,
-  polygonZkEvmCardona,
-} from 'viem/chains'
+import { optimismSepolia } from 'viem/chains'
 import { dynamicChainsToViem, viemChainsToDynamic } from '@/utils'
 import { useMemo, useState } from 'react'
-import { isEqual } from 'lodash'
+// import { isEqual } from 'lodash'
 
-const chains = [
-  polygonAmoy,
-  optimismSepolia,
-  baseSepolia,
-  gnosisChiado,
-  polygonZkEvm,
-  polygonZkEvmCardona,
-] as const
+const chains = [optimismSepolia] as const
 
 const drpcApiKey = process.env.NEXT_PUBLIC_DRPC_API_KEY
 
@@ -90,13 +76,15 @@ export function ConnectorProvider({ children }: { children: React.ReactNode }) {
           initialAuthenticationMode: 'connect-only',
           overrides: {
             evmNetworks: (dashboardNetworks) => {
-              const newEvmNetworks = mergeNetworks(
-                dashboardNetworks,
-                evmNetworks
-              )
+              // COMMENTED OUT FOR NOW: We are not using the dashboard networks
 
-              if (!isEqual(newEvmNetworks, evmNetworks))
-                setEvmNetworks(newEvmNetworks)
+              // const newEvmNetworks = mergeNetworks(
+              //   dashboardNetworks,
+              //   evmNetworks
+              // )
+
+              // if (!isEqual(newEvmNetworks, evmNetworks))
+              //   setEvmNetworks(newEvmNetworks)
 
               return evmNetworks
             },

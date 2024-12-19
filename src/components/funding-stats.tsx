@@ -23,14 +23,15 @@ export function FundingStats({ className }: { className?: string }) {
           size="sm"
           className="pt-6"
           title="Price Usd"
-          value={'1.00 $'}
+          prefix="$"
+          value={1}
           icon={<DollarSignIcon />}
         />
         <MarketStat
           size="sm"
           className="pt-6"
           title={`${symbol} TVL`}
-          value={toCompactNumber(Number(totalSupply) * 1)}
+          value={Number(totalSupply) * 1 || '...'}
           icon={<DollarSignIcon />}
         />
       </CardContent>

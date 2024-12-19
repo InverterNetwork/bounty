@@ -7,6 +7,7 @@ export default function useFundingStats() {
     orchestratorAddress,
     requestedModules,
   })
+
   const address = workflow.data?.fundingManager.address
   const symbol = workflow.data?.fundingToken.symbol ?? '...'
 

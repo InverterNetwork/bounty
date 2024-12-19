@@ -61,6 +61,7 @@ export function useFunding() {
             toast.info('Deposit confirmed')
           },
           onApprove: () => {
+            allowance.refetch()
             toast.info('Approve confirmed')
           },
         }
@@ -89,7 +90,7 @@ export function useFunding() {
     balance.isSuccess && Number(amount) <= Number(balance.data?.formatted!)
 
   return {
-    balance: balance.data?.formatted,
+    balance: balance.data,
     allowance,
     isConnected,
     setAmount,
