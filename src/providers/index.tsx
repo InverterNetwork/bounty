@@ -7,7 +7,13 @@ import { AppProvider } from './app-context'
 import { ThemeProvider } from './theme-provider'
 import { InverterProvider } from './inverter-provider'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

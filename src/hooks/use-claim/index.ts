@@ -6,6 +6,7 @@ import {
   handleClaimListForContributorAddress,
   handleVerify,
   handleEditContributers,
+  handleClaimList,
 } from './utils'
 import { requestedModules, orchestratorAddress } from '@/lib/workflow'
 import { useAccount } from 'wagmi'
@@ -24,6 +25,19 @@ export default function useClaim() {
   const onError = (err: any) => {
     toast.error(err?.message)
   }
+
+  const claimList = useQuery({
+    queryKey: ['getClaimList'],
+    queryFn: async () => {
+      if (!workflow.data) throw new Error('No workflow found')
+      const ids =
+        await workflow.data.optionalModule.LM_PC_Bounties_v1.read.listClaimIds.run()
+
+      const list = await handleClaimList({ ids, workflow: workflow.data })
+
+      return list
+    },
+  })
 
   const contributorsList = useQuery({
     queryKey: ['contributorsList'],
@@ -54,6 +68,9 @@ export default function useClaim() {
     mutationFn: (data: VerifyArgs) =>
       handleVerify({ data, workflow: workflow.data, toast }),
     onError,
+    onSuccess: () => {
+      claimList.refetch()
+    },
   })
 
   const editContributors = useMutation({
@@ -80,5 +97,6 @@ export default function useClaim() {
     post,
     verify,
     ERC20Symbol,
+    claimList,
   }
 }

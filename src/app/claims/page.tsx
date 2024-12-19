@@ -94,7 +94,7 @@ export default function Page() {
                     {row.map((cell) => (
                       <TableCell key={cell.item}>{cell.item}</TableCell>
                     ))}
-                    <TableCell>
+                    <TableCell className="flex justify-center">
                       <Button type="button" onClick={() => setSelected(index)}>
                         Select
                       </Button>

@@ -20,6 +20,7 @@ import {
   GitPullRequestCreate,
   ShieldPlus,
   BaggageClaim,
+  CheckCheck,
 } from 'lucide-react'
 import { ThemeSwitcher } from './theme-switcher'
 import { WalletWidget } from './wallet-widget'
@@ -107,6 +108,11 @@ const NavItems = ({ pathname }: { pathname: string }) => {
       href: '/claims',
       label: 'Claims',
       icon: <BaggageClaim />,
+    },
+    {
+      href: '/verify',
+      label: 'Verify',
+      icon: <CheckCheck />,
     },
     {
       href: '/admin',

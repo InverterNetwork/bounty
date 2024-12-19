@@ -54,10 +54,7 @@ export default function Page() {
                         <TableCell>{row.id}</TableCell>
                         <TableCell>{row.details.title}</TableCell>
                         <TableCell className="flex justify-center">
-                          <Button
-                            color="primary"
-                            onClick={() => setIndex(index)}
-                          >
+                          <Button type="button" onClick={() => setIndex(index)}>
                             Select
                           </Button>
                         </TableCell>
