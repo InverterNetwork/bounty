@@ -11,14 +11,16 @@ import {
   FloatingLabelInput,
   MarketStat,
 } from '@inverter-network/react'
+import { useChainSpecs } from '@inverter-network/react/client'
 
 export default function FundsPage() {
+  const { showWalletWidget } = useChainSpecs()
+
   const {
     handleDeposit,
     loading,
     balance,
     allowance,
-    isConnected,
     setAmount,
     isDepositable,
     amount,
@@ -78,9 +80,9 @@ export default function FundsPage() {
         </CardContent>
       </Card>
 
-      {!isConnected && <WalletWidget className="w-full" />}
+      {showWalletWidget && <WalletWidget className="w-full" />}
 
-      {!!isConnected && (
+      {!showWalletWidget && (
         <Button
           className="w-full"
           color="primary"

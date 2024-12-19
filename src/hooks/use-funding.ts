@@ -10,7 +10,7 @@ export function useFunding() {
 
   const queryClient = useQueryClient()
 
-  const { address, isConnected } = useAccount()
+  const { address } = useAccount()
 
   const workflow = useWorkflow({
     orchestratorAddress,
@@ -92,7 +92,7 @@ export function useFunding() {
   return {
     balance: balance.data,
     allowance,
-    isConnected,
+
     setAmount,
     loading,
     handleDeposit,

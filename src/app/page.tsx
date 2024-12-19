@@ -19,9 +19,10 @@ import {
   TableRow,
 } from '@inverter-network/react'
 import { useBounty } from '@/hooks/use-bounty'
+import { useChainSpecs } from '@inverter-network/react/client'
 
 export default function Page() {
-  const { isConnected } = useAccount()
+  const { showWalletWidget } = useChainSpecs()
   const { list } = useBounty()
   const [index, setIndex] = useState<number>(0)
   const bounty = list.data?.[index ?? 0]
@@ -79,9 +80,9 @@ export default function Page() {
         </CardContent>
       </Card>
 
-      {!isConnected && <WalletWidget className="w-full" />}
+      {showWalletWidget && <WalletWidget className="w-full" />}
 
-      {!!bounty?.id && (
+      {!showWalletWidget && !!bounty?.id && (
         <Button color="primary" asChild className="w-full">
           <Link href={`/claims/${bounty.id}`}>Claim Bounty</Link>
         </Button>

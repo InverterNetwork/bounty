@@ -14,22 +14,21 @@ import {
   CardTitle,
   cn,
   FloatingLabelInput,
-  Spinner,
 } from '@inverter-network/react'
-import { useAccount } from 'wagmi'
 import {
   Tabs,
   TabsList,
   TabsTrigger,
   Switch,
   Label,
+  useChainSpecs,
 } from '@inverter-network/react/client'
 
 const tabs = ['Owner', 'Claimer', 'Issuer', 'Verifier'] as const
 type Tabs = (typeof tabs)[number]
 
 export default function Page() {
-  const { isConnected } = useAccount()
+  const { showWalletWidget } = useChainSpecs()
   const { roles, setRole, checkRole } = useRole()
   const [tab, setTab] = useState(0)
   const [walletAddress, setWalletAddress] = useState('')
@@ -69,84 +68,70 @@ export default function Page() {
       className="flex flex-col items-center gap-6 w-full max-w-xl m-auto"
       onSubmit={onSubmit}
     >
-      <Card>
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Manage Role</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
-          {(() => {
-            if (roles.isPending) return <Spinner className="m-auto" />
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="grant-revoke"
+              onCheckedChange={toggleType}
+              checked={type === 'Grant'}
+            ></Switch>
+            <Label htmlFor="grant-revoke">
+              Grant/Revoke {`( ${type}ing ${type === 'Grant' ? '✅' : '❌'} )`}
+            </Label>
+          </div>
 
-            return (
-              <>
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="grant-revoke"
-                    onCheckedChange={toggleType}
-                    checked={type === 'Grant'}
-                  ></Switch>
-                  <Label htmlFor="grant-revoke">
-                    Grant/Revoke{' '}
-                    {`( ${type}ing ${type === 'Grant' ? '✅' : '❌'} )`}
-                  </Label>
-                </div>
+          <Tabs
+            defaultValue="Owner"
+            onValueChange={(value) => setTab(tabs.indexOf(value as Tabs))}
+            value={tabs[tab]}
+          >
+            <TabsList className="flex">
+              {tabs.map((tab) => (
+                <TabsTrigger className="flex-1" key={tab} value={tab}>
+                  {tab}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
 
-                <Tabs
-                  defaultValue="Owner"
-                  className="w-[400px]"
-                  onValueChange={(value) => setTab(tabs.indexOf(value as Tabs))}
-                  value={tabs[tab]}
-                >
-                  <TabsList className="flex">
-                    {tabs.map((tab) => (
-                      <TabsTrigger className="flex-1" key={tab} value={tab}>
-                        {tab}
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
-                </Tabs>
+          <FloatingLabelInput
+            label="Wallet Address"
+            onChange={(e) => setWalletAddress(e.target.value)}
+            type="address"
+            required
+          />
 
-                <FloatingLabelInput
-                  label="Wallet Address"
-                  onChange={(e) => setWalletAddress(e.target.value)}
-                  type="address"
-                  required
-                />
-
-                <Alert
-                  className={cn(
-                    (checkRole.isPending ||
-                      checkRole.isError ||
-                      !isAddress(walletAddress)) &&
-                      'hidden'
-                  )}
-                >
-                  {canSubmit.message}
-                </Alert>
-
-                {!isConnected && <WalletWidget className="w-full" />}
-
-                {!!isConnected && (
-                  <Button
-                    size={'sm'}
-                    color="primary"
-                    type="submit"
-                    disabled={
-                      setRole.isPending ||
-                      checkRole.isPending ||
-                      !canSubmit?.can
-                    }
-                    loading={setRole.isPending || checkRole.isPending}
-                    className="w-full"
-                  >
-                    Set Role
-                  </Button>
-                )}
-              </>
-            )
-          })()}
+          <Alert
+            className={cn(
+              (checkRole.isPending ||
+                checkRole.isError ||
+                !isAddress(walletAddress)) &&
+                'hidden'
+            )}
+          >
+            {canSubmit.message}
+          </Alert>
         </CardContent>
       </Card>
+
+      {showWalletWidget && <WalletWidget className="w-full" />}
+
+      {!showWalletWidget && (
+        <Button
+          size={'sm'}
+          color="primary"
+          type="submit"
+          disabled={setRole.isPending || checkRole.isPending || !canSubmit?.can}
+          loading={setRole.isPending || checkRole.isPending}
+          className="w-full"
+        >
+          Set Role
+        </Button>
+      )}
     </form>
   )
 }
