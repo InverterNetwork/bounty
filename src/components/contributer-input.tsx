@@ -1,8 +1,8 @@
 import { InitialContributor } from '@/types'
-import { amountString, cn, Frame } from '@inverter-network/react'
+import { amountString } from '@inverter-network/react'
 import { Button } from '@inverter-network/react'
 import { FloatingLabelInput } from '@inverter-network/react'
-import { CrossIcon } from 'lucide-react'
+import { CircleX } from 'lucide-react'
 
 export function ContributerInput({
   contributors,
@@ -48,7 +48,7 @@ export function ContributerInput({
   }
 
   return (
-    <div className="flex flex-col w-full max-w-xl">
+    <div className="flex flex-col w-full max-w-xl gap-3">
       {!!onUrlChange && (
         <FloatingLabelInput
           label="Proposal URL"
@@ -57,6 +57,7 @@ export function ContributerInput({
           required
         />
       )}
+
       <Button
         className="mt-6"
         color="primary"
@@ -67,20 +68,26 @@ export function ContributerInput({
       >
         Add Contributor
       </Button>
+
       {contributors.map((c, index) => (
-        <Frame key={index} className="mt-6 relative">
-          <CrossIcon
-            className={cn(
-              'rounded-box cursor-pointer btn-ghost p-0 absolute right-3 top-3',
-              index === 0 && 'hidden'
-            )}
-            size={30}
+        <div
+          key={index}
+          className="flex flex-col gap-3 mt-2 relative p-3 border rounded-lg border-border"
+        >
+          <Button
+            variant="ghost"
+            className={`p-0 absolute -right-4 -top-4 z-10 ${
+              index === 0 ? 'hidden' : ''
+            }`}
             onClick={() => {
               removeContributer(c.uid)
             }}
-            // @ts-ignore
             disabled={canEditContributor === false}
-          />
+            size={'icon'}
+          >
+            <CircleX size={26} />
+          </Button>
+
           <FloatingLabelInput
             label={`Contributer ${index + 1} Address`}
             onChange={(e) => {
@@ -104,7 +111,7 @@ export function ContributerInput({
             defaultValue={c.claimAmount}
             required
           />
-        </Frame>
+        </div>
       ))}
     </div>
   )

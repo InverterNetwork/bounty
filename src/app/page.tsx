@@ -20,7 +20,7 @@ import {
 } from '@inverter-network/react'
 import { useBounty } from '@/hooks/use-bounty'
 
-export default function PageClient() {
+export default function Page() {
   const { isConnected } = useAccount()
   const { list } = useBounty()
   const [index, setIndex] = useState<number>(0)

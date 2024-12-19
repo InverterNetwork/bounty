@@ -10,9 +10,11 @@ import {
 import { requestedModules, orchestratorAddress } from '@/lib/workflow'
 import { useAccount } from 'wagmi'
 import { ClaimArgs, EditContributersArgs, VerifyArgs } from '@/types'
+import { useRouter } from 'next/navigation'
 
 export default function useClaim() {
   const { address } = useAccount()
+  const router = useRouter()
 
   const workflow = useWorkflow({
     requestedModules,
@@ -41,7 +43,7 @@ export default function useClaim() {
     onSuccess: () => {
       contributorsList.refetch()
 
-      toast.success(`Claim proposal has been confirmed`)
+      router.push('/claims')
     },
 
     onError,
@@ -51,11 +53,6 @@ export default function useClaim() {
     mutationKey: ['performVerify'],
     mutationFn: (data: VerifyArgs) =>
       handleVerify({ data, workflow: workflow.data, toast }),
-
-    onSuccess: () => {
-      toast.success(`Verify has been confirmed`)
-    },
-
     onError,
   })
 
@@ -69,17 +66,19 @@ export default function useClaim() {
       }),
 
     onSuccess: () => {
-      toast.success(`Contributors edit has been confirmed`)
       contributorsList.refetch()
     },
 
     onError,
   })
 
+  const ERC20Symbol = workflow.data?.fundingToken.symbol ?? '...'
+
   return {
     editContributors,
     contributorsList,
     post,
     verify,
+    ERC20Symbol,
   }
 }

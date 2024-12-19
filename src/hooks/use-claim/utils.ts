@@ -52,13 +52,11 @@ export const handleClaimList = async ({
             claimId
           )
 
-        const contributors = claim.contributors.map((c) => c)
-
         const formattedClaim = {
           ...claim,
           claimId,
           details: claim.details as FormattedClaimDetails,
-          contributors,
+          contributors: claim.contributors,
           symbol: workflow.fundingToken.symbol,
         }
 

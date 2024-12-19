@@ -19,6 +19,7 @@ import {
   ScrollIcon,
   GitPullRequestCreate,
   ShieldPlus,
+  BaggageClaim,
 } from 'lucide-react'
 import { ThemeSwitcher } from './theme-switcher'
 import { WalletWidget } from './wallet-widget'
@@ -56,7 +57,7 @@ export function Navbar() {
 
         <Separator orientation="vertical" />
 
-        <div className="items-center hidden md:flex gap-2">
+        <div className="items-center hidden lg:flex gap-2">
           <NavItems pathname={pathname} />
         </div>
       </div>
@@ -64,7 +65,7 @@ export function Navbar() {
       <div className="flex items-center gap-4">
         <WalletWidget size={'sm'} />
 
-        <span className="md:hidden">
+        <span className="lg:hidden">
           <Drawer>
             <DrawerTrigger asChild>
               <Button variant="outline" size="icon">
@@ -101,6 +102,11 @@ const NavItems = ({ pathname }: { pathname: string }) => {
       href: '/post',
       label: 'Post',
       icon: <GitPullRequestCreate />,
+    },
+    {
+      href: '/claims',
+      label: 'Claims',
+      icon: <BaggageClaim />,
     },
     {
       href: '/admin',

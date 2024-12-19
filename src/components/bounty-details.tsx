@@ -1,4 +1,4 @@
-import { Frame } from '@inverter-network/react'
+import { cn, Frame } from '@inverter-network/react'
 import { Badge, compressAddress } from '@inverter-network/react'
 import { Separator } from '@inverter-network/react/client'
 
@@ -10,6 +10,7 @@ export const BountyDetails = {
     symbol,
     creatorAddress,
     bigTitle = false,
+    className,
   }: {
     title?: string
     minimumPayoutAmount: string
@@ -17,11 +18,12 @@ export const BountyDetails = {
     symbol: string
     creatorAddress?: string
     bigTitle?: boolean
+    className?: string
   }) => (
-    <div className="items-center justify-center p-3">
+    <div className={cn('items-center justify-center p-3', className)}>
       {bigTitle ? <h3>{title}</h3> : <p>{title}</p>}
 
-      <Separator />
+      <Separator className="my-3" />
 
       <div className="flex flex-wrap gap-3">
         <Badge>
@@ -37,11 +39,13 @@ export const BountyDetails = {
   Description: ({
     description = '...',
     url = '/',
+    className,
   }: {
     description?: string
     url?: string
+    className?: string
   }) => (
-    <Frame className="max-w-xl">
+    <Frame className={cn('max-w-xl', className)}>
       <h4>Description</h4>
       <p>{description}</p>
       <h4>URL</h4>
