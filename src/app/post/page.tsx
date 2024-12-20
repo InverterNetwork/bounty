@@ -14,7 +14,6 @@ import {
   compressAddress,
   firstLetterToUpperCase,
   FloatingLabelInput,
-  Spinner,
 } from '@inverter-network/react'
 import { NoAccess } from '@/components/ui/no-access'
 import { Separator, useChainSpecs } from '@inverter-network/react/client'

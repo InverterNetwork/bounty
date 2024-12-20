@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
   NoData,
-  Spinner,
   Table,
   TableBody,
   TableCell,

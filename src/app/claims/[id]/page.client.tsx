@@ -11,7 +11,6 @@ import { handleBountyList } from '@/hooks/use-bounty/utils'
 import useClaim from '@/hooks/use-claim'
 import { InitialContributor } from '@/types'
 import { NoAccess } from '@/components/ui/no-access'
-import { FourOFour } from '@/components/ui/four-o-four'
 import {
   Button,
   Card,
