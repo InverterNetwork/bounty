@@ -1,11 +1,13 @@
 import { ClientPage } from './page.client'
 
-type Props = {
-  params: { id: string }
+interface Props {
+  params: Promise<{ id: string }>
 }
 
-export default async function Page({ params }: Props) {
-  const { id } = params
+const Page = async ({ params }: Props) => {
+  const { id } = await params
 
   return <ClientPage bountyId={id} />
 }
+
+export default Page

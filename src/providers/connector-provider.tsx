@@ -6,14 +6,6 @@ import { useRef, useState, useEffect, useMemo } from 'react'
 // Third-party dependencies
 import { isEqual } from 'lodash'
 import { Chain, HttpTransport } from 'viem'
-import {
-  optimismSepolia,
-  polygonAmoy,
-  baseSepolia,
-  gnosisChiado,
-  polygonZkEvm,
-  polygonZkEvmCardona,
-} from 'viem/chains'
 import { WagmiProvider, createConfig } from 'wagmi'
 
 // Dynamic Labs SDK imports
@@ -33,20 +25,14 @@ import {
   viemChainsToDynamic,
   getDrpcTransport,
 } from '@/utils'
+import { optimism } from 'viem/chains'
 
 // ============================================================================
 // Constants & Configuration
 // ============================================================================
 
 // Supported blockchain networks
-const chains = [
-  polygonAmoy,
-  optimismSepolia,
-  baseSepolia,
-  gnosisChiado,
-  polygonZkEvm,
-  polygonZkEvmCardona,
-] as const
+const chains = [optimism] as const
 
 // ============================================================================
 // Helper Functions
