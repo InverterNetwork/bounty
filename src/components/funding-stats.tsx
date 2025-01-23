@@ -7,7 +7,6 @@ import {
   CardContent,
   CardHeader,
   MarketStat,
-  toCompactNumber,
 } from '@inverter-network/react'
 import { DollarSignIcon } from 'lucide-react'
 

@@ -4,6 +4,7 @@ import { WalletWidget } from '@/components'
 import { useBounty } from '@/hooks/use-bounty'
 import { Fragment, useState } from 'react'
 import { useRole } from '@/hooks/use-role'
+import { compressAddress, firstLetterToUpperCase } from '@inverter-network/sdk'
 import {
   Badge,
   Button,
@@ -11,8 +12,6 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  compressAddress,
-  firstLetterToUpperCase,
   FloatingLabelInput,
 } from '@inverter-network/react'
 import { NoAccess } from '@/components/ui/no-access'

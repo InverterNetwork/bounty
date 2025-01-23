@@ -1,5 +1,6 @@
+import { compressAddress } from '@inverter-network/sdk'
 import { cn, Frame } from '@inverter-network/react'
-import { Badge, compressAddress } from '@inverter-network/react'
+import { Badge } from '@inverter-network/react'
 import { Separator } from '@inverter-network/react/client'
 
 export const BountyDetails = {

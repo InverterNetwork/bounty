@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" data-inverter-theme="dark">
+    <html lang="en" suppressHydrationWarning>
       {/* PWA config */}
       <link rel="manifest" href="/manifest.json" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,7 +50,9 @@ function RootLayout({ children }: { children: React.ReactNode }) {
             <div className="body">
               <Navbar />
               <div className="children">
-                <Suspense>{children}</Suspense>
+                <div className="children-content">
+                  <Suspense>{children}</Suspense>
+                </div>
               </div>
             </div>
           </Providers>

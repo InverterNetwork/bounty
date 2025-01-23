@@ -1,5 +1,5 @@
 import { InitialContributor } from '@/types'
-import { amountString } from '@inverter-network/react'
+import { toAmountString } from '@inverter-network/sdk'
 import { Button } from '@inverter-network/react'
 import { FloatingLabelInput } from '@inverter-network/react'
 import { CircleX } from 'lucide-react'
@@ -102,7 +102,7 @@ export function ContributerInput({
             onChange={(e) => {
               handleState({
                 uid: c.uid,
-                claimAmount: amountString(e.target.value),
+                claimAmount: toAmountString(e.target.value),
               })
             }}
             max={

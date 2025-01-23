@@ -6,9 +6,9 @@ import { promisify } from 'util'
 import { session } from './session'
 import { UserModel } from '@/lib/mongo'
 import { UserRole } from '@/types'
-import { authorized } from '../guards'
 import { headers } from 'next/headers'
 import { splitBearerToken } from '../main'
+import { authorized } from '@inverter-network/sdk'
 
 // Owner only
 export async function ownerOnly(): Promise<{ role: UserRole; address: Hex }> {
@@ -47,7 +47,7 @@ async function getUserRoleFromTokenOrSession(): Promise<{
   role: UserRole
   address: Hex
 }> {
-  const token = headers().get('authorization')?.split(' ')[1]
+  const token = (await headers()).get('authorization')?.split(' ')[1]
   const sessionRole = <UserRole | undefined>await session().get('role')
   const sessionAddress = <Hex | undefined>await session().get('address')
 

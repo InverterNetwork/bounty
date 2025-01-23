@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 export default {
-  transpilePackages: ['react-daisyui'],
   reactStrictMode: true,
   images: {
     remotePatterns: [

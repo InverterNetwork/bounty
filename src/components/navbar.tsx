@@ -66,10 +66,10 @@ export function Navbar() {
       <div className="flex items-center gap-4">
         <WalletWidget size={'sm'} />
 
-        <span className="lg:hidden">
+        <span className="md:hidden">
           <Drawer>
             <DrawerTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" asChild>
                 <Menu className="fill-current w-5 h-5" />
               </Button>
             </DrawerTrigger>
@@ -138,16 +138,16 @@ const NavItems = ({ pathname }: { pathname: string }) => {
     }
 
     return (
-      <Button
-        key={index}
-        startIcon={i.icon}
-        size="sm"
-        asChild
-        variant={pathname === i.href ? 'link' : 'ghost'}
-        className={cn('w-full min-w-max justify-start truncate')}
-      >
-        <Link href={i.href}>{i.label}</Link>
-      </Button>
+      <Link href={i.href} key={index}>
+        <Button
+          startIcon={i.icon}
+          size="sm"
+          variant={pathname === i.href ? 'link' : 'ghost'}
+          className={cn('w-full min-w-max justify-start truncate')}
+        >
+          {i.label}
+        </Button>
+      </Link>
     )
   })
 }

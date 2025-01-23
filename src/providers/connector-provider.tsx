@@ -1,96 +1,137 @@
 'use client'
 
-import { Global } from '@emotion/react'
-import { dynamicTheme } from '@/styles/dynamic-theme'
+// React imports
+import { useRef, useState, useEffect, useMemo } from 'react'
+
+// Third-party dependencies
+import { isEqual } from 'lodash'
+import { Chain, HttpTransport } from 'viem'
+import {
+  optimismSepolia,
+  polygonAmoy,
+  baseSepolia,
+  gnosisChiado,
+  polygonZkEvm,
+  polygonZkEvmCardona,
+} from 'viem/chains'
+import { WagmiProvider, createConfig } from 'wagmi'
+
+// Dynamic Labs SDK imports
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum'
 import {
+  DynamicContextProps,
   DynamicContextProvider,
   DynamicUserProfile,
-  // mergeNetworks,
+  mergeNetworks,
 } from '@dynamic-labs/sdk-react-core'
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector'
-import { WagmiProvider, createConfig, http } from 'wagmi'
-import { Chain, HttpTransport } from 'viem'
-import { optimismSepolia } from 'viem/chains'
-import { dynamicChainsToViem, viemChainsToDynamic } from '@/utils'
-import { useMemo, useState } from 'react'
-// import { isEqual } from 'lodash'
 
-const chains = [optimismSepolia] as const
+// Local imports
+import { dynamicTheme } from '@/styles/dynamic-theme'
+import {
+  dynamicChainsToViem,
+  viemChainsToDynamic,
+  getDrpcTransport,
+} from '@/utils'
 
-const drpcApiKey = process.env.NEXT_PUBLIC_DRPC_API_KEY
+// ============================================================================
+// Constants & Configuration
+// ============================================================================
 
-const drpcChainIdMap = {
-  1: 'ethereum',
-  11155111: 'sepolia',
-  10: 'optimism',
-  11155420: 'optimism-sepolia',
-  84532: 'base-sepolia',
-  1101: 'polygon-zkevm',
-  2442: 'polygon-zkevm-cardona',
-} as Record<number, string | undefined>
+// Supported blockchain networks
+const chains = [
+  polygonAmoy,
+  optimismSepolia,
+  baseSepolia,
+  gnosisChiado,
+  polygonZkEvm,
+  polygonZkEvmCardona,
+] as const
 
-const getTransport = (chainId: number) => {
-  const chainIdMap = drpcChainIdMap?.[chainId]
+// ============================================================================
+// Helper Functions
+// ============================================================================
 
-  if (!drpcApiKey || !chainIdMap) return http()
-
-  return http(
-    `https://lb.drpc.org/ogrpc?network=${chainIdMap}&dkey=${drpcApiKey}`
-  )
-}
-
+/**
+ * Creates Wagmi configuration with specified chains and transport settings
+ */
 const getConfig = (chains: readonly [Chain, ...Chain[]]) =>
   createConfig({
     chains: chains,
     multiInjectedProviderDiscovery: false,
     transports: chains.reduce(
       (acc, chain) => {
-        acc[chain.id] = getTransport(chain.id)
+        acc[chain.id] = getDrpcTransport(chain.id)
         return acc
       },
       {} as Record<number, HttpTransport>
     ),
     ssr: true,
-    cacheTime: 5000, // 3 seconds
+    cacheTime: 5000, // 5 seconds
   })
 
+// Shared events and initial state
+const networkChangeEvent = new Event('evmNetworksChanged')
+const initialEvmNetworks = viemChainsToDynamic(chains)
+
+// ============================================================================
+// Main Component
+// ============================================================================
+
 export function ConnectorProvider({ children }: { children: React.ReactNode }) {
-  const [evmNetworks, setEvmNetworks] = useState(viemChainsToDynamic(chains))
+  // State management
+  const evmNetworks = useRef(initialEvmNetworks)
+  const [networkVersion, setNetworkVersion] = useState(0)
   const { shadowDomOverWrites, cssOverrides } = dynamicTheme
 
+  // Network change event listener
+  useEffect(() => {
+    const handleNetworkChange = () => setNetworkVersion((v) => v + 1)
+    window.addEventListener('evmNetworksChanged', handleNetworkChange)
+    return () =>
+      window.removeEventListener('evmNetworksChanged', handleNetworkChange)
+  }, [])
+
+  // Memoized configurations
   const config = useMemo(
-    () => getConfig(dynamicChainsToViem(evmNetworks)),
-    [evmNetworks]
+    () => getConfig(dynamicChainsToViem(evmNetworks.current)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [networkVersion]
   )
 
-  // RENDER
+  const settings = useMemo(
+    () =>
+      ({
+        environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ID || '',
+        cssOverrides,
+        walletConnectors: [EthereumWalletConnectors],
+        initialAuthenticationMode: 'connect-only',
+        overrides: {
+          // Network override handler to merge dashboard and initial networks
+          evmNetworks: (dashboardNetworks) => {
+            const newNetworks = mergeNetworks(
+              dashboardNetworks,
+              initialEvmNetworks
+            )
+            if (!isEqual(evmNetworks.current, newNetworks)) {
+              evmNetworks.current = newNetworks
+              requestAnimationFrame(() =>
+                window.dispatchEvent(networkChangeEvent)
+              )
+            }
+            return evmNetworks.current
+          },
+        },
+      }) as const satisfies DynamicContextProps['settings'],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [networkVersion]
+  )
+
+  // Render provider hierarchy
   return (
     <>
-      <Global styles={shadowDomOverWrites} />
-      <DynamicContextProvider
-        settings={{
-          environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ID || '',
-          cssOverrides,
-          walletConnectors: [EthereumWalletConnectors],
-          initialAuthenticationMode: 'connect-only',
-          overrides: {
-            evmNetworks: (dashboardNetworks) => {
-              // COMMENTED OUT FOR NOW: We are not using the dashboard networks
-
-              // const newEvmNetworks = mergeNetworks(
-              //   dashboardNetworks,
-              //   evmNetworks
-              // )
-
-              // if (!isEqual(newEvmNetworks, evmNetworks))
-              //   setEvmNetworks(newEvmNetworks)
-
-              return evmNetworks
-            },
-          },
-        }}
-      >
+      <style dangerouslySetInnerHTML={{ __html: shadowDomOverWrites }} />
+      <DynamicContextProvider settings={settings}>
         <WagmiProvider config={config} reconnectOnMount>
           <DynamicWagmiConnector>
             {children}
