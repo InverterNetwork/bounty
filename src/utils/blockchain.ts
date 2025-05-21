@@ -1,4 +1,4 @@
-import { http } from 'viem'
+import { http, HttpTransport } from 'viem'
 
 // DRPC API configuration
 const drpcApiKey = process.env.NEXT_PUBLIC_DRPC_API_KEY
@@ -24,4 +24,13 @@ export const getDrpcTransport = (chainId: number) => {
   return http(
     `https://lb.drpc.org/ogrpc?network=${chainIdMap}&dkey=${drpcApiKey}`
   )
+}
+
+/**
+ * Creates an HTTP transport for a specific chain
+ */
+export const getERPCTransport = (chainId: number): HttpTransport => {
+  return http(`https://rpc.inverter.network/main/evm/${chainId}`, {
+    timeout: 10000,
+  })
 }
